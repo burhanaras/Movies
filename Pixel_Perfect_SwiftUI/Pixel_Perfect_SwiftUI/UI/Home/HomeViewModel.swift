@@ -11,8 +11,12 @@ import Combine
 class HomeViewModel: ObservableObject {
     @Published var nowPlayingMovies = [Movie]()
     @Published var upcomingMovies = [Movie]()
+    @Published var isPagingAvailable: Bool = true
+    
     private var networkLayer: INetworkLayer = NetworkLayer()
     private var cancellable: AnyCancellable?
+    private var cancellables: Set<AnyCancellable> = []
+    private var currentPage = 1
     
     
     func loadData() {
@@ -37,5 +41,24 @@ class HomeViewModel: ObservableObject {
                     self.upcomingMovies = upcomingResponse.results.map{ Movie.fromDTO(dto: $0)}
                 }
             )
+    }
+    
+    func loadNextPageForUpcomingMovies() {
+        currentPage += 1
+        
+        networkLayer.getUpcomingMovies(page: currentPage)
+            .sink { completion in
+                switch completion {
+                    
+                case .finished:
+                    break
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
+            } receiveValue: {[unowned self] moviesResponse in
+               // print(moviesResponse.results)
+                self.upcomingMovies += moviesResponse.results.map{ Movie.fromDTO(dto: $0)}
+            }
+            .store(in: &cancellables)
     }
 }

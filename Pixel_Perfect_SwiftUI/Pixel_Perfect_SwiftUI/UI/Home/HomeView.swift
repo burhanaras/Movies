@@ -11,21 +11,32 @@ struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
     var body: some View {
         VStack {
-            Text("Now Playing")
-            List {
-                ForEach(viewModel.nowPlayingMovies){ movie in
-                    Text(movie.title)
-                }
-            }
-            
-            Text("Upcoming")
-            List {
-                ForEach(viewModel.upcomingMovies){ movie in
-                    Text(movie.title)
+
+            ScrollView(.vertical){
+                LazyVStack(alignment: .leading){
+                    Text("Now Playing").bold().padding()
+                    ForEach(viewModel.nowPlayingMovies){ movie in
+                        Text(movie.title)
+                    }
+                    
+                    Text("Upcoming").bold().padding()
+                    ForEach(viewModel.upcomingMovies){ movie in
+                        Text(movie.title)
+                    }
+                    
+                    if viewModel.isPagingAvailable {
+                        ProgressView()
+                            .onAppear {
+                                viewModel.loadNextPageForUpcomingMovies()
+                            }
+                    }
                 }
             }
         }
         .task {
+            viewModel.loadData()
+        }
+        .refreshable {
             viewModel.loadData()
         }
     }
