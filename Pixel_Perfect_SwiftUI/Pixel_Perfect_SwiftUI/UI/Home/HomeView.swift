@@ -30,7 +30,7 @@ struct HomeView: View {
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                 }
                 
-                LazyVStack(alignment: .leading){
+                VStack(alignment: .leading){
                     ForEach(viewModel.upcomingMovies){ movie in
                         VStack {
                            MovieView(movie: movie)
