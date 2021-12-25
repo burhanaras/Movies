@@ -19,6 +19,7 @@
 		94F7B0FC2777893D0048988A /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0FB2777893D0048988A /* RequestError.swift */; };
 		94F7B0FE2777895E0048988A /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0FD2777895E0048988A /* NetworkLayer.swift */; };
 		94F7B100277789BB0048988A /* NetworkLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0FF277789BB0048988A /* NetworkLayer+Extension.swift */; };
+		94F7B10227778BA30048988A /* API-Keys-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94F7B10127778BA30048988A /* API-Keys-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		94F7B0FB2777893D0048988A /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		94F7B0FD2777895E0048988A /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		94F7B0FF277789BB0048988A /* NetworkLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkLayer+Extension.swift"; sourceTree = "<group>"; };
+		94F7B10127778BA30048988A /* API-Keys-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Keys-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				94F7B0DD277787900048988A /* ContentView.swift */,
 				94F7B0DF277787900048988A /* Assets.xcassets */,
 				94F7B0E1277787900048988A /* Preview Content */,
+				94F7B10127778BA30048988A /* API-Keys-Info.plist */,
 			);
 			path = Pixel_Perfect_SwiftUI;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			files = (
 				94F7B0E3277787900048988A /* Preview Assets.xcassets in Resources */,
 				94F7B0E0277787900048988A /* Assets.xcassets in Resources */,
+				94F7B10227778BA30048988A /* API-Keys-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
