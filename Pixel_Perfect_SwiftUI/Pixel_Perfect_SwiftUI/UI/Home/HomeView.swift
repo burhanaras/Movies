@@ -11,17 +11,32 @@ struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
     var body: some View {
         VStack {
-
             ScrollView(.vertical){
-                LazyVStack(alignment: .leading){
-                    Text("Now Playing").bold().padding()
-                    ForEach(viewModel.nowPlayingMovies){ movie in
-                        Text(movie.title)
+                
+                if !viewModel.nowPlayingMovies.isEmpty {
+                    TabView{
+                        ForEach(viewModel.nowPlayingMovies){ movie in
+                            ZStack {
+                                //    AsyncImage(url: movie.backdropURL)
+                                //      .frame(minHeight: 256)
+                                Image("spider")
+                                    .resizable()
+                                    .frame(minHeight: 256)
+                                Text(movie.title)
+                            }
+                            .frame(height: 256)
+                        }
                     }
-                    
-                    Text("Upcoming").bold().padding()
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                }
+                
+                LazyVStack(alignment: .leading){
                     ForEach(viewModel.upcomingMovies){ movie in
-                        Text(movie.title)
+                        VStack {
+                           MovieView(movie: movie)
+                            Divider()
+                                .padding(.horizontal, 16)
+                        }
                     }
                     
                     if viewModel.isPagingAvailable {
@@ -39,6 +54,54 @@ struct HomeView: View {
         .refreshable {
             viewModel.loadData()
         }
+        .edgesIgnoringSafeArea(.top)
+    }
+}
+
+struct MovieView: View {
+    let movie: Movie
+    var body: some View {
+        HStack(spacing: 8) {
+            AsyncImage(
+                url: movie.posterURL,
+                content: { image in
+                    image.resizable()
+                        .scaledToFill()
+                        .frame(width: 104, height: 104)
+                        .cornerRadius(12)
+                        .clipped()
+                },
+                placeholder: {
+                    ProgressView()
+                }
+            )
+            
+            VStack(alignment: .leading) {
+                Text(movie.title).bold()
+                    .font(.system(size: 15, weight: .bold, design: .default))
+                    .foregroundColor(Color.black)
+                    .padding(.vertical, 8)
+                Text(movie.overview)
+                    .font(.system(size: 13, weight: .medium, design: .default))
+                    .foregroundColor(Color.gray)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    .padding(.bottom, 16)
+                HStack {
+                    Spacer()
+                    Text(movie.releaseDate)
+                        .font(.system(size: 12, weight: .medium, design: .default))
+                        .foregroundColor(Color.gray)
+                }
+            }
+            HStack{
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundColor(Color.gray)
+            }
+            .frame(width: 28)
+        }
+        .padding(16)
     }
 }
 
