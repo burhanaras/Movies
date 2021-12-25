@@ -57,6 +57,7 @@ class HomeViewModel: ObservableObject {
                 }
             } receiveValue: {[unowned self] moviesResponse in
                // print(moviesResponse.results)
+                self.isPagingAvailable = (currentPage <= moviesResponse.total_pages)
                 self.upcomingMovies += moviesResponse.results.map{ Movie.fromDTO(dto: $0)}
             }
             .store(in: &cancellables)
