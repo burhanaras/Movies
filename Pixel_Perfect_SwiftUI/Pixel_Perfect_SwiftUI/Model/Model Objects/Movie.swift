@@ -61,6 +61,6 @@ extension Movie {
             return dateFormatterWithDot.string(from: date)
         }
         
-        return Movie(id: dto.id, title: "\(dto.title) (\(yearText)", backdropURL: backdropURL, posterURL: posterURL, releaseDate: releaseDate, rating: "\(dto.vote_average)/10")
+        return Movie(id: dto.id, title: "\(dto.title) (\(yearText))", backdropURL: backdropURL, posterURL: posterURL, releaseDate: releaseDate, rating: "\(dto.vote_average)/10")
     }
 }
