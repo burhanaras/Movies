@@ -11,8 +11,8 @@ struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
     var body: some View {
         NavigationView {
-            VStack {
-                ScrollView(.vertical){
+            ScrollView(.vertical){
+                VStack {
                     // Now Playing Movies
                     if !viewModel.nowPlayingMovies.isEmpty {
                         TabView {
@@ -79,7 +79,9 @@ struct HomeView: View {
                 viewModel.loadData()
             }
             .edgesIgnoringSafeArea(.top)
+            .navigationBarTitle("")
             .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
@@ -105,7 +107,7 @@ struct MovieView: View {
             VStack(alignment: .leading) {
                 Text(movie.title).bold()
                     .font(.system(size: 15, weight: .bold, design: .default))
-                    .foregroundColor(Color.black)
+                    .foregroundColor(.primary)
                     .multilineTextAlignment(.leading)
                     .padding(.vertical, 8)
                 Text(movie.overview)

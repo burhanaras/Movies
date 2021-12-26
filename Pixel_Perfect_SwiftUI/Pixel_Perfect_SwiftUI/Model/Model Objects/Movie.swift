@@ -30,7 +30,7 @@ extension Movie {
         
         let dateFormatterWithDot: DateFormatter = {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-mm-dd"
+            dateFormatter.dateFormat = "dd.mm.yyyy"
             return dateFormatter
         }()
         
