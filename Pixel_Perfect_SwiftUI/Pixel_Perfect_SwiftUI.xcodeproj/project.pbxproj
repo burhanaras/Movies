@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		94B51FD12778B9DE00263604 /* DummyNetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B51FD02778B9DE00263604 /* DummyNetworkLayer.swift */; };
+		94B51FD42778C23200263604 /* RefreshableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B51FD32778C23200263604 /* RefreshableView.swift */; };
 		94F7B0DC277787900048988A /* Pixel_Perfect_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0DB277787900048988A /* Pixel_Perfect_SwiftUIApp.swift */; };
 		94F7B0DE277787900048988A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0DD277787900048988A /* ContentView.swift */; };
 		94F7B0E0277787900048988A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94F7B0DF277787900048988A /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		94B51FD02778B9DE00263604 /* DummyNetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyNetworkLayer.swift; sourceTree = "<group>"; };
+		94B51FD32778C23200263604 /* RefreshableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableView.swift; sourceTree = "<group>"; };
 		94F7B0D8277787900048988A /* Pixel_Perfect_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pixel_Perfect_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F7B0DB277787900048988A /* Pixel_Perfect_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pixel_Perfect_SwiftUIApp.swift; sourceTree = "<group>"; };
 		94F7B0DD277787900048988A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		94B51FD22778C21800263604 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				94B51FD32778C23200263604 /* RefreshableView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		94F7B0CF277787900048988A = {
 			isa = PBXGroup;
 			children = (
@@ -73,11 +83,12 @@
 		94F7B0DA277787900048988A /* Pixel_Perfect_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				94F7B0E9277787D10048988A /* App */,
+				94F7B0F0277788120048988A /* Coordinator */,
 				94F7B0FA277789280048988A /* Network */,
 				94F7B0F3277788AC0048988A /* Model */,
-				94F7B0F0277788120048988A /* Coordinator */,
 				94F7B0EA277787DC0048988A /* UI */,
-				94F7B0E9277787D10048988A /* App */,
+				94B51FD22778C21800263604 /* View */,
 				94F7B0DD277787900048988A /* ContentView.swift */,
 				94F7B0DF277787900048988A /* Assets.xcassets */,
 				94F7B0E1277787900048988A /* Preview Content */,
@@ -250,6 +261,7 @@
 				94F7B100277789BB0048988A /* NetworkLayer+Extension.swift in Sources */,
 				94F7B105277891870048988A /* DetailView.swift in Sources */,
 				94F7B0EF277788030048988A /* HomeView.swift in Sources */,
+				94B51FD42778C23200263604 /* RefreshableView.swift in Sources */,
 				94F7B0F22777881F0048988A /* Coordinator.swift in Sources */,
 				94F7B0ED277787F60048988A /* HomeViewModel.swift in Sources */,
 				94B51FD12778B9DE00263604 /* DummyNetworkLayer.swift in Sources */,

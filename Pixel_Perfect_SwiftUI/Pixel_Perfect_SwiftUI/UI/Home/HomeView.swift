@@ -168,21 +168,32 @@ struct HomeListView: View {
 struct ErrorView: View {
     @ObservedObject var viewModel: HomeViewModel
     var body: some View {
-        VStack (spacing: 16){
-            Image(systemName: "xmark.circle")
-            Text(viewModel.errorMessage)
-            Button {
-                viewModel.loadData()
-            } label: {
-                Text("Try Agagin")
-                    .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 1)
-                        )
-            }
 
+        RefreshableView {
+            viewModel.loadData()
+        } content: {
+            Spacer()
+                .frame(minHeight: 200)
+            VStack (spacing: 16){
+                
+                Image(systemName: "xmark.circle")
+                Text(viewModel.errorMessage)
+                Button {
+                    viewModel.loadData()
+                } label: {
+                    Text("Try Agagin")
+                        .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 1)
+                            )
+                }
+
+            }
+            Spacer()
+            HStack{ Spacer() }
         }
+
     }
 }
 
