@@ -75,7 +75,7 @@ class Unit_Tests: XCTestCase {
         // THEN: Upcoming movies should be added, nowPlaying should remain same
         XCTAssertEqual(20, sut.nowPlayingMovies.count)
         XCTAssertEqual(60, sut.upcomingMovies.count)
-       // XCTAssertEqual(RequestError.apiError.localizedDescription, sut.errorMessage)
+        XCTAssert(sut.errorMessage.isEmpty)
     }
 }
 
