@@ -31,8 +31,9 @@ class Unit_Tests: XCTestCase {
     
     func test_HomeViewModel_should_show_data_correctly_when_network_returns_successful_data(){
         // GIVEN: that we have a network layer that returns some movies
-        let moviesResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20))
-        let networkLayer: INetworkLayer = TestNetworkLayer(response: moviesResponse)
+        let nowPlayingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20))
+        let upcomingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 25))
+        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponse: nowPlayingResponse, upcomingResponse: upcomingResponse)
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: loadData() of HomeviewModel is called
@@ -40,7 +41,7 @@ class Unit_Tests: XCTestCase {
         
         // THEN: HomeViewModel's data should be same as received data
         XCTAssertEqual(20, sut.nowPlayingMovies.count)
-        XCTAssertEqual(20, sut.upcomingMovies.count)
+        XCTAssertEqual(25, sut.upcomingMovies.count)
         XCTAssert(sut.errorMessage.isEmpty)
     }
     
@@ -81,21 +82,23 @@ class Unit_Tests: XCTestCase {
 
 // MARK: - Test network layer that returns successful data or fails
 class TestNetworkLayer: INetworkLayer {
-    private let response: MoviesResponse
+    private let nowPlayingResponse: MoviesResponse
+    private let upcomingResponse: MoviesResponse
     
-    init(response: MoviesResponse){
-        self.response = response
+    init(nowPlayingResponse: MoviesResponse, upcomingResponse: MoviesResponse){
+        self.nowPlayingResponse = nowPlayingResponse
+        self.upcomingResponse = upcomingResponse
     }
     
     func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(response))
+            .Publisher(.success(nowPlayingResponse))
             .eraseToAnyPublisher()
     }
     
     func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(response))
+            .Publisher(.success(upcomingResponse))
             .eraseToAnyPublisher()
     }
     
