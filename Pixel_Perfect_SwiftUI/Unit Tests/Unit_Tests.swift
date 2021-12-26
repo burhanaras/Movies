@@ -33,7 +33,7 @@ class Unit_Tests: XCTestCase {
         // GIVEN: that we have a network layer that returns some movies
         let nowPlayingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20))
         let upcomingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 25))
-        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponse: nowPlayingResponse, upcomingResponse: upcomingResponse)
+        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponse: nowPlayingResponse, upcomingResponse: upcomingResponse)
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: loadData() of HomeviewModel is called
@@ -98,24 +98,29 @@ class Unit_Tests: XCTestCase {
 
 
 // MARK: - Test network layer that returns successful data or fails
-class TestNetworkLayer: INetworkLayer {
-    private let nowPlayingResponse: MoviesResponse
-    private let upcomingResponse: MoviesResponse
+class TestPagingNetworkLayer: INetworkLayer {
+    private var nowPlayingResponses: [MoviesResponse]
+    private var upcomingResponses: [MoviesResponse]
     
     init(nowPlayingResponse: MoviesResponse, upcomingResponse: MoviesResponse){
-        self.nowPlayingResponse = nowPlayingResponse
-        self.upcomingResponse = upcomingResponse
+        self.nowPlayingResponses = [nowPlayingResponse]
+        self.upcomingResponses = [upcomingResponse]
+    }
+    
+    init(nowPlayingResponses: [MoviesResponse], upcomingResponses: [MoviesResponse]){
+        self.nowPlayingResponses = nowPlayingResponses
+        self.upcomingResponses = upcomingResponses
     }
     
     func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(nowPlayingResponse))
+            .Publisher(.success(nowPlayingResponses.removeFirst()))
             .eraseToAnyPublisher()
     }
     
     func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(upcomingResponse))
+            .Publisher(.success(upcomingResponses.removeFirst()))
             .eraseToAnyPublisher()
     }
     
@@ -142,28 +147,6 @@ class TestFailingNetworkLayer: INetworkLayer {
     
 }
 
-class TestPagingNetworkLayer: INetworkLayer {
-    private var nowPlayingResponses: [MoviesResponse]
-    private var upcomingResponses: [MoviesResponse]
-    
-    init(nowPlayingResponses: [MoviesResponse], upcomingResponses: [MoviesResponse]){
-        self.nowPlayingResponses = nowPlayingResponses
-        self.upcomingResponses = upcomingResponses
-    }
-    
-    func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
-        return Result<MoviesResponse, RequestError>
-            .Publisher(.success(nowPlayingResponses.removeFirst()))
-            .eraseToAnyPublisher()
-    }
-    
-    func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
-        return Result<MoviesResponse, RequestError>
-            .Publisher(.success(upcomingResponses.removeFirst()))
-            .eraseToAnyPublisher()
-    }
-    
-}
 
 // MARK: - Dummy data
 
