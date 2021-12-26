@@ -51,12 +51,14 @@ class HomeViewModel: ObservableObject {
                     print("\(upcomingResponse.results.count) upcoming")
                     self.nowPlayingMovies = nowPlayingResponse.results.map{ Movie.fromDTO(dto: $0)}
                     self.upcomingMovies = upcomingResponse.results.map{ Movie.fromDTO(dto: $0)}
+                    self.isPagingAvailable = (currentPage < upcomingResponse.total_pages)
                     self.screenState = .success
                 }
             )
     }
     
     func loadNextPageForUpcomingMovies() {
+        guard isPagingAvailable else { return }
         currentPage += 1
         
         networkLayer.getUpcomingMovies(page: currentPage)
@@ -70,7 +72,7 @@ class HomeViewModel: ObservableObject {
                 }
             } receiveValue: {[unowned self] moviesResponse in
                // print(moviesResponse.results)
-                self.isPagingAvailable = (currentPage <= moviesResponse.total_pages)
+                self.isPagingAvailable = (currentPage < moviesResponse.total_pages)
                 self.upcomingMovies += moviesResponse.results.map{ Movie.fromDTO(dto: $0)}
             }
             .store(in: &cancellables)

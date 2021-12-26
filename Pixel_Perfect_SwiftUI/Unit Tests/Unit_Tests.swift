@@ -77,6 +77,23 @@ class Unit_Tests: XCTestCase {
         XCTAssertEqual(60, sut.upcomingMovies.count)
         XCTAssert(sut.errorMessage.isEmpty)
     }
+    
+    func test_paging_onHomeViewModel_should_stop_when_pages_are_completed(){
+        // GIVEN: that we have a network layer that returns some data
+        let nowPlayingResponses = [MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 20))]
+        let upcomingResponses = [MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 30))]
+        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponses: nowPlayingResponses, upcomingResponses: upcomingResponses)
+        let sut = HomeViewModel(networkLayer: networkLayer)
+        
+        // WHEN: HomeViewModel's loadData() and loadNextPageForUpcomingMovies() are called
+        sut.loadData()
+        sut.loadNextPageForUpcomingMovies()
+        
+        // THEN: Upcoming movies should be added, nowPlaying should remain same
+        XCTAssertEqual(20, sut.nowPlayingMovies.count)
+        XCTAssertEqual(30, sut.upcomingMovies.count)
+        XCTAssert(sut.errorMessage.isEmpty)
+    }
 }
 
 
