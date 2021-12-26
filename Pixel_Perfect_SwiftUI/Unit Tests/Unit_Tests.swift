@@ -41,6 +41,7 @@ class Unit_Tests: XCTestCase {
         // THEN: HomeViewModel's data should be same as received data
         XCTAssertEqual(20, sut.nowPlayingMovies.count)
         XCTAssertEqual(20, sut.upcomingMovies.count)
+        XCTAssert(sut.errorMessage.isEmpty)
     }
     
     func test_HomeviewModel_should_show_error_message_when_network_fails(){
@@ -55,6 +56,25 @@ class Unit_Tests: XCTestCase {
         XCTAssertEqual(0, sut.nowPlayingMovies.count)
         XCTAssertEqual(0, sut.upcomingMovies.count)
         XCTAssertEqual(RequestError.apiError.localizedDescription, sut.errorMessage)
+    }
+    
+    func test_paging_onHomeViewModel_should_work_fine(){
+        // GIVEN: that we have a network layer that returns some data
+        let nowPlayingResponses = [MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20)),
+                               MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 20))]
+        let upcomingResponses = [MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 30)),
+                               MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 30))]
+        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponses: nowPlayingResponses, upcomingResponses: upcomingResponses)
+        let sut = HomeViewModel(networkLayer: networkLayer)
+        
+        // WHEN: HomeViewModel's loadData() and loadNextPageForUpcomingMovies() are called
+        sut.loadData()
+        sut.loadNextPageForUpcomingMovies()
+        
+        // THEN: Upcoming movies should be added, nowPlaying should remain same
+        XCTAssertEqual(20, sut.nowPlayingMovies.count)
+        XCTAssertEqual(60, sut.upcomingMovies.count)
+       // XCTAssertEqual(RequestError.apiError.localizedDescription, sut.errorMessage)
     }
 }
 
@@ -102,6 +122,28 @@ class TestFailingNetworkLayer: INetworkLayer {
     
 }
 
+class TestPagingNetworkLayer: INetworkLayer {
+    private var nowPlayingResponses: [MoviesResponse]
+    private var upcomingResponses: [MoviesResponse]
+    
+    init(nowPlayingResponses: [MoviesResponse], upcomingResponses: [MoviesResponse]){
+        self.nowPlayingResponses = nowPlayingResponses
+        self.upcomingResponses = upcomingResponses
+    }
+    
+    func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
+        return Result<MoviesResponse, RequestError>
+            .Publisher(.success(nowPlayingResponses.removeFirst()))
+            .eraseToAnyPublisher()
+    }
+    
+    func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
+        return Result<MoviesResponse, RequestError>
+            .Publisher(.success(upcomingResponses.removeFirst()))
+            .eraseToAnyPublisher()
+    }
+    
+}
 
 // MARK: - Dummy data
 
