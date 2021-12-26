@@ -18,7 +18,7 @@ struct HomeView: View {
                 case .success:
                     HomeListView(viewModel: viewModel)
                 case .failure:
-                   ErrorView(viewModel: viewModel)
+                    ErrorView(viewModel: viewModel)
                 }
             }
             .task {
@@ -92,46 +92,53 @@ struct HomeListView: View {
                     if !viewModel.nowPlayingMovies.isEmpty {
                         TabView {
                             ForEach(viewModel.nowPlayingMovies){ movie in
-                                ZStack(alignment: .bottom) {
-                                    AsyncImage(
-                                        url: movie.backdropURL,
-                                        content: { image in
-                                            GeometryReader { geo in
-                                                image
-                                                    .resizable()
-                                                    .scaledToFill()
+                                
+                                NavigationLink {
+                                    DetailView(movie: movie)
+                                } label: {
+                                    ZStack(alignment: .bottom) {
+                                        AsyncImage(
+                                            url: movie.backdropURL,
+                                            content: { image in
+                                                GeometryReader { geo in
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: geo.size.width , height: 256)
+                                                    
+                                                }
+                                            },
+                                            placeholder: {
+                                                GeometryReader { geo in
+                                                    ZStack {
+                                                        ProgressView()
+                                                    }
                                                     .frame(width: geo.size.width , height: 256)
+                                                    .background(Color.gray.opacity(0.3))
+                                                }
+                                                
                                                 
                                             }
-                                        },
-                                        placeholder: {
-                                            GeometryReader { geo in
-                                                ZStack {
-                                                    ProgressView()
-                                                }
-                                                .frame(width: geo.size.width , height: 256)
-                                                .background(Color.gray.opacity(0.3))
-                                            }
-                                            
-                                            
-                                        }
-                                    )
-                                    
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text(movie.title)
-                                            .font(.system(size: 20, weight: .bold, design: .default))
-                                            .foregroundColor(Color.white)
+                                        )
                                         
-                                        Text(movie.overview)
-                                            .font(.system(size: 12, weight: .medium, design: .default))
-                                            .foregroundColor(Color.white)
-                                            .lineLimit(2)
-                                            .multilineTextAlignment(.leading)
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            Text(movie.title)
+                                                .font(.system(size: 20, weight: .bold, design: .default))
+                                                .foregroundColor(Color.white)
+                                            
+                                            Text(movie.overview)
+                                                .font(.system(size: 12, weight: .medium, design: .default))
+                                                .foregroundColor(Color.white)
+                                                .lineLimit(2)
+                                                .multilineTextAlignment(.leading)
+                                        }
+                                        .padding(.horizontal, 16)
+                                        .padding(.bottom, 40)
                                     }
-                                    .padding(.horizontal, 16)
-                                    .padding(.bottom, 40)
+                                    .frame(minHeight: 256)
                                 }
-                                .frame(minHeight: 256)
+                                
+                                
                             }
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
@@ -168,7 +175,7 @@ struct HomeListView: View {
 struct ErrorView: View {
     @ObservedObject var viewModel: HomeViewModel
     var body: some View {
-
+        
         RefreshableView {
             viewModel.loadData()
         } content: {
@@ -183,17 +190,17 @@ struct ErrorView: View {
                 } label: {
                     Text("Try Agagin")
                         .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.blue, lineWidth: 1)
+                        )
                 }
-
+                
             }
             Spacer()
             HStack{ Spacer() }
         }
-
+        
     }
 }
 
@@ -208,6 +215,6 @@ struct HomeView_Previews: PreviewProvider {
             HomeView(viewModel: HomeViewModel(networkLayer: DummyFailingNetworkLayer()))
                 .preferredColorScheme(.dark)
         }
-
+        
     }
 }
