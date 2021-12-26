@@ -13,13 +13,21 @@ struct HomeView: View {
         NavigationView {
             VStack {
                 ScrollView(.vertical){
-                    
+                    // Now Playing Movies
                     if !viewModel.nowPlayingMovies.isEmpty {
                         TabView {
                             ForEach(viewModel.nowPlayingMovies){ movie in
                                 ZStack {
-                                    AsyncImage(url: movie.backdropURL)
-                                        .frame(minHeight: 256)
+                                    AsyncImage(
+                                        url: movie.backdropURL,
+                                        content: { image in
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                        },
+                                        placeholder: {
+                                            ProgressView()
+                                        }
+                                    )
                                     Image("spider")
                                         .resizable()
                                         .frame(minHeight: 256)
@@ -41,7 +49,7 @@ struct HomeView: View {
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     }
-                    
+                    //Upcoming Movies
                     LazyVStack(alignment: .leading){
                         ForEach(viewModel.upcomingMovies){ movie in
                             VStack {

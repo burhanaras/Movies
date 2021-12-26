@@ -21,7 +21,6 @@ struct DetailView: View {
                 content: { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
-                       // .frame( maxHeight: 256)
                 },
                 placeholder: {
                     ProgressView()
