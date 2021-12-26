@@ -18,8 +18,8 @@ struct HomeView: View {
                         TabView {
                             ForEach(viewModel.nowPlayingMovies){ movie in
                                 ZStack {
-                                        AsyncImage(url: movie.backdropURL)
-                                          .frame(minHeight: 256)
+                                    AsyncImage(url: movie.backdropURL)
+                                        .frame(minHeight: 256)
                                     Image("spider")
                                         .resizable()
                                         .frame(minHeight: 256)
@@ -70,7 +70,8 @@ struct HomeView: View {
             .refreshable {
                 viewModel.loadData()
             }
-        .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea(.top)
+            .navigationBarHidden(true)
         }
     }
 }

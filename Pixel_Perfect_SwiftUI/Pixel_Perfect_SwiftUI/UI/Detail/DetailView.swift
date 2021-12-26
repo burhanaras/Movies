@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct DetailView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var movie: Movie
+    
     var body: some View {
         VStack(alignment: .leading) {
+            
+            topBar
             
             AsyncImage(
                 url: movie.backdropURL,
                 content: { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame( maxHeight: 256)
+                       // .frame( maxHeight: 256)
                 },
                 placeholder: {
                     ProgressView()
@@ -63,6 +67,34 @@ struct DetailView: View {
             Spacer()
         }
         .navigationBarHidden(true)
+    }
+    
+    var topBar: some View {
+        HStack {
+            Button {
+                self.presentationMode.wrappedValue.dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.primary)
+                    .padding(12)
+            }
+            
+            Spacer()
+            
+            Text(movie.title)
+                .font(.system(size: 20, weight: .bold, design: .default))
+            
+            Spacer()
+            
+            Button {
+               
+            } label: {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.primary)
+                    .padding(12)
+            }
+            .hidden()
+        }
     }
 }
 
