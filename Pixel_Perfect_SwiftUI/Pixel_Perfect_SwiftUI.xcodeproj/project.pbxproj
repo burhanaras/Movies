@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9437D89D2779078E006ECABA /* Unit_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9437D89C2779078E006ECABA /* Unit_Tests.swift */; };
 		94B51FD12778B9DE00263604 /* DummyNetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B51FD02778B9DE00263604 /* DummyNetworkLayer.swift */; };
 		94B51FD42778C23200263604 /* RefreshableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B51FD32778C23200263604 /* RefreshableView.swift */; };
 		94F7B0DC277787900048988A /* Pixel_Perfect_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0DB277787900048988A /* Pixel_Perfect_SwiftUIApp.swift */; };
@@ -25,7 +26,19 @@
 		94F7B105277891870048988A /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B104277891870048988A /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9437D89E2779078E006ECABA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94F7B0D0277787900048988A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 94F7B0D7277787900048988A;
+			remoteInfo = Pixel_Perfect_SwiftUI;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		9437D89A2779078E006ECABA /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9437D89C2779078E006ECABA /* Unit_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit_Tests.swift; sourceTree = "<group>"; };
 		94B51FD02778B9DE00263604 /* DummyNetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyNetworkLayer.swift; sourceTree = "<group>"; };
 		94B51FD32778C23200263604 /* RefreshableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableView.swift; sourceTree = "<group>"; };
 		94F7B0D8277787900048988A /* Pixel_Perfect_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pixel_Perfect_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +59,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9437D8972779078E006ECABA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94F7B0D5277787900048988A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,6 +76,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9437D89B2779078E006ECABA /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9437D89C2779078E006ECABA /* Unit_Tests.swift */,
+			);
+			path = "Unit Tests";
+			sourceTree = "<group>";
+		};
 		94B51FD22778C21800263604 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				94F7B0DA277787900048988A /* Pixel_Perfect_SwiftUI */,
+				9437D89B2779078E006ECABA /* Unit Tests */,
 				94F7B0D9277787900048988A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				94F7B0D8277787900048988A /* Pixel_Perfect_SwiftUI.app */,
+				9437D89A2779078E006ECABA /* Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,6 +216,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9437D8992779078E006ECABA /* Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9437D8A22779078E006ECABA /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildPhases = (
+				9437D8962779078E006ECABA /* Sources */,
+				9437D8972779078E006ECABA /* Frameworks */,
+				9437D8982779078E006ECABA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9437D89F2779078E006ECABA /* PBXTargetDependency */,
+			);
+			name = "Unit Tests";
+			productName = "Unit Tests";
+			productReference = 9437D89A2779078E006ECABA /* Unit Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		94F7B0D7277787900048988A /* Pixel_Perfect_SwiftUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94F7B0E6277787900048988A /* Build configuration list for PBXNativeTarget "Pixel_Perfect_SwiftUI" */;
@@ -213,6 +261,10 @@
 				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
+					9437D8992779078E006ECABA = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 94F7B0D7277787900048988A;
+					};
 					94F7B0D7277787900048988A = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -232,11 +284,19 @@
 			projectRoot = "";
 			targets = (
 				94F7B0D7277787900048988A /* Pixel_Perfect_SwiftUI */,
+				9437D8992779078E006ECABA /* Unit Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9437D8982779078E006ECABA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94F7B0D6277787900048988A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -250,6 +310,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9437D8962779078E006ECABA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9437D89D2779078E006ECABA /* Unit_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94F7B0D4277787900048988A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,7 +340,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9437D89F2779078E006ECABA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 94F7B0D7277787900048988A /* Pixel_Perfect_SwiftUI */;
+			targetProxy = 9437D89E2779078E006ECABA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9437D8A02779078E006ECABA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QHU56UTR8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.burhan.Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pixel_Perfect_SwiftUI.app/Pixel_Perfect_SwiftUI";
+			};
+			name = Debug;
+		};
+		9437D8A12779078E006ECABA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QHU56UTR8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.burhan.Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pixel_Perfect_SwiftUI.app/Pixel_Perfect_SwiftUI";
+			};
+			name = Release;
+		};
 		94F7B0E4277787900048988A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -450,6 +562,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9437D8A22779078E006ECABA /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9437D8A02779078E006ECABA /* Debug */,
+				9437D8A12779078E006ECABA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		94F7B0D3277787900048988A /* Build configuration list for PBXProject "Pixel_Perfect_SwiftUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
