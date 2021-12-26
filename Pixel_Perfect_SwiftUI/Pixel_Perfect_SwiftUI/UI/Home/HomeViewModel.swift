@@ -8,18 +8,28 @@
 import Foundation
 import Combine
 
+enum ScreenState {
+    case success, loading, failure
+}
+
 class HomeViewModel: ObservableObject {
     @Published var nowPlayingMovies = [Movie]()
     @Published var upcomingMovies = [Movie]()
     @Published var isPagingAvailable: Bool = true
+    @Published var screenState: ScreenState = .loading
+    @Published var errorMessage: String = ""
     
-    private var networkLayer: INetworkLayer = NetworkLayer()
-    private var cancellable: AnyCancellable?
+    private var networkLayer: INetworkLayer
+    private var cancellable: AnyCancellable? = nil
     private var cancellables: Set<AnyCancellable> = []
     private var currentPage = 1
     
+    init(networkLayer: INetworkLayer){
+        self.networkLayer = networkLayer
+    }
     
     func loadData() {
+        self.screenState = .loading
         cancellable = Publishers.Zip(
             networkLayer.getNowPlayingMovies(page: 1),
             networkLayer.getUpcomingMovies(page: 1)
@@ -32,6 +42,8 @@ class HomeViewModel: ObservableObject {
                         break
                     case let .failure(error):
                         print("ERROR Here: \(error.localizedDescription)")
+                        self.errorMessage = error.localizedDescription
+                        self.screenState = .failure
                     }
                 },
                 receiveValue: { [unowned self] nowPlayingResponse, upcomingResponse in
@@ -39,6 +51,7 @@ class HomeViewModel: ObservableObject {
                     print("\(upcomingResponse.results.count) upcoming")
                     self.nowPlayingMovies = nowPlayingResponse.results.map{ Movie.fromDTO(dto: $0)}
                     self.upcomingMovies = upcomingResponse.results.map{ Movie.fromDTO(dto: $0)}
+                    self.screenState = .success
                 }
             )
     }

@@ -12,6 +12,7 @@ final class Coordinator {
     static let shared = Coordinator()
     
     func homeView() -> HomeView {
-        return HomeView()
+        let viewModel = HomeViewModel(networkLayer: NetworkLayer())
+        return HomeView(viewModel: viewModel)
     }
 }
