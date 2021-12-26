@@ -94,7 +94,7 @@ struct HomeListView: View {
                             ForEach(viewModel.nowPlayingMovies){ movie in
                                 
                                 NavigationLink {
-                                    DetailView(movie: movie)
+                                    Coordinator.shared.detailView(for: movie)
                                 } label: {
                                     ZStack(alignment: .bottom) {
                                         AsyncImage(
@@ -151,7 +151,7 @@ struct HomeListView: View {
                     ForEach(viewModel.upcomingMovies){ movie in
                         VStack {
                             NavigationLink {
-                                DetailView(movie: movie)
+                                Coordinator.shared.detailView(for: movie)
                             } label: {
                                 MovieView(movie: movie)
                             }

@@ -15,4 +15,8 @@ final class Coordinator {
         let viewModel = HomeViewModel(networkLayer: NetworkLayer())
         return HomeView(viewModel: viewModel)
     }
+    
+    func detailView(for movie: Movie) -> DetailView {
+        return DetailView(movie: movie)
+    }
 }
