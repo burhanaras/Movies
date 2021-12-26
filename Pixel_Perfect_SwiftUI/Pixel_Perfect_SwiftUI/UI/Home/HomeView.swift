@@ -11,77 +11,93 @@ struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
     var body: some View {
         NavigationView {
-            ScrollView(.vertical){
-                VStack {
-                    // Now Playing Movies
-                    if !viewModel.nowPlayingMovies.isEmpty {
-                        TabView {
-                            ForEach(viewModel.nowPlayingMovies){ movie in
-                                ZStack {
-                                    AsyncImage(
-                                        url: movie.backdropURL,
-                                        content: { image in
-                                            image.resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                        },
-                                        placeholder: {
-                                            ProgressView()
+            ZStack {
+                ScrollView(.vertical){
+                    VStack {
+                        // Now Playing Movies
+                        VStack{
+                            if !viewModel.nowPlayingMovies.isEmpty {
+                                TabView {
+                                    ForEach(viewModel.nowPlayingMovies){ movie in
+                                        ZStack(alignment: .bottom) {
+                                            AsyncImage(
+                                                url: movie.backdropURL,
+                                                content: { image in
+                                                    GeometryReader { geo in
+                                                        image
+                                                            .resizable()
+                                                            .scaledToFill()
+                                                            .frame(width: geo.size.width , height: 256)
+                                  
+                                                    }
+                                                },
+                                                placeholder: {
+                                                    GeometryReader { geo in
+                                                        ZStack {
+                                                            ProgressView()
+                                                        }
+                                                        .frame(width: geo.size.width , height: 256)
+                                                        .background(Color.gray.opacity(0.3))
+                                                    }
+                                                    
+                                                    
+                                                }
+                                            )
+      
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text(movie.title)
+                                                    .font(.system(size: 20, weight: .bold, design: .default))
+                                                    .foregroundColor(Color.white)
+                                                
+                                                Text(movie.overview)
+                                                    .font(.system(size: 12, weight: .medium, design: .default))
+                                                    .foregroundColor(Color.white)
+                                                    .lineLimit(2)
+                                                    .multilineTextAlignment(.leading)
+                                            }
+                                            .padding(.horizontal, 16)
+                                            .padding(.bottom, 40)
                                         }
-                                    )
-                                    Image("spider")
-                                        .resizable()
                                         .frame(minHeight: 256)
-                                    VStack(spacing: 8) {
-                                        Text(movie.title)
-                                            .font(.system(size: 20, weight: .bold, design: .default))
-                                            .foregroundColor(Color.white)
-                                        
-                                        Text(movie.overview)
-                                            .font(.system(size: 12, weight: .medium, design: .default))
-                                            .foregroundColor(Color.white)
-                                            .lineLimit(2)
-                                            .multilineTextAlignment(.leading)
                                     }
-                                    .padding(16)
                                 }
-                                .frame(height: 256)
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                             }
                         }
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                    }
-                    //Upcoming Movies
-                    LazyVStack(alignment: .leading){
-                        ForEach(viewModel.upcomingMovies){ movie in
-                            VStack {
-                                NavigationLink {
-                                    DetailView(movie: movie)
-                                } label: {
-                                    MovieView(movie: movie)
+                        .frame(minHeight: 256)
+
+                        //Upcoming Movies
+                        LazyVStack(alignment: .leading){
+                            ForEach(viewModel.upcomingMovies){ movie in
+                                VStack {
+                                    NavigationLink {
+                                        DetailView(movie: movie)
+                                    } label: {
+                                        MovieView(movie: movie)
+                                    }
+                                    Divider()
+                                        .padding(.horizontal, 16)
                                 }
-                                Divider()
-                                    .padding(.horizontal, 16)
                             }
-                        }
-                        
-                        if viewModel.isPagingAvailable {
-                            ProgressView()
-                                .onAppear {
-                                    viewModel.loadNextPageForUpcomingMovies()
-                                }
+                            
+                            if viewModel.isPagingAvailable {
+                                ProgressView()
+                                    .onAppear {
+                                        viewModel.loadNextPageForUpcomingMovies()
+                                    }
+                            }
                         }
                     }
                 }
+                .task {
+                    viewModel.loadData()
+                }
+                .navigationBarTitle("")
+                .navigationBarHidden(true)
+                .navigationBarBackButtonHidden(true)
             }
-            .task {
-                viewModel.loadData()
-            }
-            .refreshable {
-                viewModel.loadData()
-            }
-            .edgesIgnoringSafeArea(.top)
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
+            .ignoresSafeArea(.all, edges: .top)
+            
         }
     }
 }
@@ -136,6 +152,11 @@ struct MovieView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        Group{
+           // HomeView()
+            HomeView()
+                .preferredColorScheme(.dark)
+        }
+
     }
 }
