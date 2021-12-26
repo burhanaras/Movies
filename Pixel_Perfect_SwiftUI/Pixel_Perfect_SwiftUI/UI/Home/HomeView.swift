@@ -10,51 +10,68 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
     var body: some View {
-        VStack {
-            ScrollView(.vertical){
-                
-                if !viewModel.nowPlayingMovies.isEmpty {
-                    TabView{
-                        ForEach(viewModel.nowPlayingMovies){ movie in
-                            ZStack {
-                                //    AsyncImage(url: movie.backdropURL)
-                                //      .frame(minHeight: 256)
-                                Image("spider")
-                                    .resizable()
-                                    .frame(minHeight: 256)
-                                Text(movie.title)
+        NavigationView {
+            VStack {
+                ScrollView(.vertical){
+                    
+                    if !viewModel.nowPlayingMovies.isEmpty {
+                        TabView {
+                            ForEach(viewModel.nowPlayingMovies){ movie in
+                                ZStack {
+                                        AsyncImage(url: movie.backdropURL)
+                                          .frame(minHeight: 256)
+                                    Image("spider")
+                                        .resizable()
+                                        .frame(minHeight: 256)
+                                    VStack(spacing: 8) {
+                                        Text(movie.title)
+                                            .font(.system(size: 20, weight: .bold, design: .default))
+                                            .foregroundColor(Color.white)
+                                        
+                                        Text(movie.overview)
+                                            .font(.system(size: 12, weight: .medium, design: .default))
+                                            .foregroundColor(Color.white)
+                                            .lineLimit(2)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    .padding(16)
+                                }
+                                .frame(height: 256)
                             }
-                            .frame(height: 256)
                         }
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                }
-                
-                VStack(alignment: .leading){
-                    ForEach(viewModel.upcomingMovies){ movie in
-                        VStack {
-                           MovieView(movie: movie)
-                            Divider()
-                                .padding(.horizontal, 16)
-                        }
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     }
                     
-                    if viewModel.isPagingAvailable {
-                        ProgressView()
-                            .onAppear {
-                                viewModel.loadNextPageForUpcomingMovies()
+                    LazyVStack(alignment: .leading){
+                        ForEach(viewModel.upcomingMovies){ movie in
+                            VStack {
+                                NavigationLink {
+                                    DetailView(movie: movie)
+                                } label: {
+                                    MovieView(movie: movie)
+                                }
+                                Divider()
+                                    .padding(.horizontal, 16)
                             }
+                        }
+                        
+                        if viewModel.isPagingAvailable {
+                            ProgressView()
+                                .onAppear {
+                                    viewModel.loadNextPageForUpcomingMovies()
+                                }
+                        }
                     }
                 }
             }
-        }
-        .task {
-            viewModel.loadData()
-        }
-        .refreshable {
-            viewModel.loadData()
-        }
+            .task {
+                viewModel.loadData()
+            }
+            .refreshable {
+                viewModel.loadData()
+            }
         .edgesIgnoringSafeArea(.top)
+        }
     }
 }
 
@@ -80,6 +97,7 @@ struct MovieView: View {
                 Text(movie.title).bold()
                     .font(.system(size: 15, weight: .bold, design: .default))
                     .foregroundColor(Color.black)
+                    .multilineTextAlignment(.leading)
                     .padding(.vertical, 8)
                 Text(movie.overview)
                     .font(.system(size: 13, weight: .medium, design: .default))

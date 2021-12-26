@@ -20,6 +20,7 @@
 		94F7B0FE2777895E0048988A /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0FD2777895E0048988A /* NetworkLayer.swift */; };
 		94F7B100277789BB0048988A /* NetworkLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B0FF277789BB0048988A /* NetworkLayer+Extension.swift */; };
 		94F7B10227778BA30048988A /* API-Keys-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94F7B10127778BA30048988A /* API-Keys-Info.plist */; };
+		94F7B105277891870048988A /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7B104277891870048988A /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		94F7B0FD2777895E0048988A /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		94F7B0FF277789BB0048988A /* NetworkLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkLayer+Extension.swift"; sourceTree = "<group>"; };
 		94F7B10127778BA30048988A /* API-Keys-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "API-Keys-Info.plist"; sourceTree = "<group>"; };
+		94F7B104277891870048988A /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		94F7B0EA277787DC0048988A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				94F7B1032778916E0048988A /* Detail */,
 				94F7B0EB277787E10048988A /* Home */,
 			);
 			path = UI;
@@ -156,6 +159,14 @@
 				94F7B0FF277789BB0048988A /* NetworkLayer+Extension.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		94F7B1032778916E0048988A /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				94F7B104277891870048988A /* DetailView.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +245,7 @@
 				94F7B0F9277789120048988A /* Movie.swift in Sources */,
 				94F7B0DE277787900048988A /* ContentView.swift in Sources */,
 				94F7B100277789BB0048988A /* NetworkLayer+Extension.swift in Sources */,
+				94F7B105277891870048988A /* DetailView.swift in Sources */,
 				94F7B0EF277788030048988A /* HomeView.swift in Sources */,
 				94F7B0F22777881F0048988A /* Coordinator.swift in Sources */,
 				94F7B0ED277787F60048988A /* HomeViewModel.swift in Sources */,
