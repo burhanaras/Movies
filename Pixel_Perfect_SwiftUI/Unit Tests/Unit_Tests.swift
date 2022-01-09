@@ -10,7 +10,7 @@ import Combine
 @testable import Pixel_Perfect_SwiftUI
 
 class Unit_Tests: XCTestCase {
-
+    
     func test_mapping_from_DTO_to_movie_should_work_fine(){
         // GIVEN: that we have a MovieDTO
         let dto = MovieDTO(id: 0, title: "title", backdrop_path: "/backdrop", poster_path: "/poster", overview: "overview", vote_average: 1.0, release_date: "2020-03-05")
@@ -31,9 +31,9 @@ class Unit_Tests: XCTestCase {
     
     func test_HomeViewModel_should_show_data_correctly_when_network_returns_successful_data(){
         // GIVEN: that we have a network layer that returns some movies
-        let nowPlayingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20))
-        let upcomingResponse = MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 25))
-        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponse: nowPlayingResponse, upcomingResponse: upcomingResponse)
+        let nowPlayingResponse = Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20)))
+        let upcomingResponse = Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 25)))
+        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponse: nowPlayingResponse, upcomingResponse: upcomingResponse)
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: loadData() of HomeviewModel is called
@@ -47,7 +47,7 @@ class Unit_Tests: XCTestCase {
     
     func test_HomeviewModel_should_show_error_message_when_network_fails(){
         // GIVEN: that we have a failing network layer
-        let networkLayer: INetworkLayer = TestFailingNetworkLayer(response: RequestError.apiError)
+        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponse: .failure(RequestError.apiError), upcomingResponse: .failure(RequestError.apiError))
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: loadData() of HomeviewModel is called
@@ -61,11 +61,11 @@ class Unit_Tests: XCTestCase {
     
     func test_paging_onHomeViewModel_should_work_fine(){
         // GIVEN: that we have a network layer that returns some data
-        let nowPlayingResponses = [MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20)),
-                               MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 20))]
-        let upcomingResponses = [MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 30)),
-                               MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 30))]
-        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponses: nowPlayingResponses, upcomingResponses: upcomingResponses)
+        let nowPlayingResponse =  [Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 20))),
+                                   Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 20)))]
+        let upcomingResponse = [Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 10, results: dummydata(count: 30))),
+                                Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 2, total_pages: 10, results: dummydata(count: 30)))]
+        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponses: nowPlayingResponse, upcomingResponses: upcomingResponse)
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: HomeViewModel's loadData() and loadNextPageForUpcomingMovies() are called
@@ -80,9 +80,9 @@ class Unit_Tests: XCTestCase {
     
     func test_paging_onHomeViewModel_should_stop_when_pages_are_completed(){
         // GIVEN: that we have a network layer that returns some data
-        let nowPlayingResponses = [MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 20))]
-        let upcomingResponses = [MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 30))]
-        let networkLayer: INetworkLayer = TestPagingNetworkLayer(nowPlayingResponses: nowPlayingResponses, upcomingResponses: upcomingResponses)
+        let nowPlayingResponses = [Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 20)))]
+        let upcomingResponses = [Result<MoviesResponse, RequestError>.success(MoviesResponse(page: 1, total_pages: 1, results: dummydata(count: 30)))]
+        let networkLayer: INetworkLayer = TestNetworkLayer(nowPlayingResponses: nowPlayingResponses, upcomingResponses: upcomingResponses)
         let sut = HomeViewModel(networkLayer: networkLayer)
         
         // WHEN: HomeViewModel's loadData() and loadNextPageForUpcomingMovies() are called
@@ -98,55 +98,33 @@ class Unit_Tests: XCTestCase {
 
 
 // MARK: - Test network layer that returns successful data or fails
-class TestPagingNetworkLayer: INetworkLayer {
-    private var nowPlayingResponses: [MoviesResponse]
-    private var upcomingResponses: [MoviesResponse]
+class TestNetworkLayer: INetworkLayer {
+    private var nowPlayingResponses: [Result<MoviesResponse, RequestError>]
+    private var upcomingResponses: [Result<MoviesResponse, RequestError>]
     
-    init(nowPlayingResponse: MoviesResponse, upcomingResponse: MoviesResponse){
+    init(nowPlayingResponse: Result<MoviesResponse, RequestError>, upcomingResponse: Result<MoviesResponse, RequestError>){
         self.nowPlayingResponses = [nowPlayingResponse]
         self.upcomingResponses = [upcomingResponse]
     }
     
-    init(nowPlayingResponses: [MoviesResponse], upcomingResponses: [MoviesResponse]){
+    init(nowPlayingResponses: [Result<MoviesResponse, RequestError>], upcomingResponses: [Result<MoviesResponse, RequestError>]){
         self.nowPlayingResponses = nowPlayingResponses
         self.upcomingResponses = upcomingResponses
     }
     
     func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(nowPlayingResponses.removeFirst()))
+            .Publisher(nowPlayingResponses.removeFirst())
             .eraseToAnyPublisher()
     }
     
     func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
         return Result<MoviesResponse, RequestError>
-            .Publisher(.success(upcomingResponses.removeFirst()))
+            .Publisher(upcomingResponses.removeFirst())
             .eraseToAnyPublisher()
     }
     
 }
-
-class TestFailingNetworkLayer: INetworkLayer {
-    private let response: RequestError
-    
-    init(response: RequestError){
-        self.response = response
-    }
-    
-    func getNowPlayingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
-        return Result<MoviesResponse, RequestError>
-            .Publisher(.failure(response))
-            .eraseToAnyPublisher()
-    }
-    
-    func getUpcomingMovies(page: Int) -> AnyPublisher<MoviesResponse, RequestError> {
-        return Result<MoviesResponse, RequestError>
-            .Publisher(.failure(response))
-            .eraseToAnyPublisher()
-    }
-    
-}
-
 
 // MARK: - Dummy data
 
